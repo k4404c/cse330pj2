@@ -68,8 +68,8 @@ static int cons = MAX_NO_OF_CONSUMERS;
 module_param(cons, int, 0);
 MODULE_PARM_DESC(cons, "Number of consumers");
 
-static char uuid[13] = "DEFAULT_UUID";
-module_param_string(uuid, uuid, sizeof(uuid), 0);
+static int uuid = 0;
+module_param(uuid, int, 0);
 MODULE_PARM_DESC(uuid, "UUID");
 //--------------------------------------------------------------//
 
@@ -93,7 +93,7 @@ int producer_thread_function(void *pv)
 
 	for_each_process(task)
 	{
-		if (task->cred->uid.val == simple_strtoul(uuid, NULL, 10)) // cahnged, was uuid
+		if (task->cred->uid.val == uiud)//simple_strtoul(uuid, NULL, 10)) // cahnged, was uuid
 		{
 			// COMPLETED TODO Implement your producer kernel thread here
 			// use kthread_should_stop() to check if the kernel thread should stop
@@ -211,7 +211,7 @@ void name_threads(void)
 static int __init thread_init_module(void)
 {
 	PCINFO("CSE330 Project-2 Kernel Module Inserted\n");
-	PCINFO("Kernel module received the following inputs: UID:%d, Buffer-Size:%d, No of Producer:%d, No of Consumer:%d", uuid, buffSize, prod, cons);
+	PCINFO("Kernel module received the following inputs: UID:%d, Buffer-Size:%d, No of Producer:%d, No of Consumer:%d", , buffSize, prod, cons);
 
 	if (buffSize > 0 && (prod >= 0 && prod < 2))
 	{
@@ -311,7 +311,7 @@ static void __exit thread_exit_module(void)
 
 		PCINFO("Total number of items produced: %d", total_no_of_process_produced);
 		PCINFO("Total number of items consumed: %d", total_no_of_process_consumed);
-		PCINFO("The total elapsed time of all processes for UID %d is \t%llu:%llu:%llu  \n", uuid, total_time_hr, total_time_min, total_time_sec);
+		PCINFO("The total elapsed time of all processes for UID %d is \t%llu:%llu:%llu  \n", , total_time_hr, total_time_min, total_time_sec);
 	}
 
 	PCINFO("CSE330 Project 2 Kernel Module Removed\n");
